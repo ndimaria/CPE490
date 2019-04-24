@@ -37,13 +37,13 @@
             return; // Do nothing if the event was already processed
           }
           switch (event.key) {
-            case "Down": // IE/Edge specific value
             case "ArrowDown":
               console.log('Rawr');
               socket.on('chat message', function(){
                 $('#messages').append($('<li>').text('Down')); // test if Arrowdown can be picked up
               });
               break;}
+            });
       });
     </script>
   </body>
