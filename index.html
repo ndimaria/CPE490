@@ -38,9 +38,18 @@
           }
           switch (event.key) {
             case "ArrowDown":
-              console.log('Rawr');
               socket.emit('chat message', 'Down');
-              break;}
+              break;
+            case "ArrowUp":
+              socket.emit('chat message', 'Up');
+              break;
+            case "ArrowLeft":
+              socket.emit('chat message', 'Left');
+              break;
+            case "ArrowRight":
+              socket.emit('chat message', 'Right');
+              break;
+            }
             });
       });
     </script>
