@@ -33,7 +33,7 @@ def retreive_screenshot(conn):
             conn.sendall(pixels)
 
 #Need to update this to change host and port connection
-def main(host='0.0.0.0', port=5000):
+def main(host='0.0.0.0', port=3000):
     sock = socket()
     sock.connect((host, port))
     try:

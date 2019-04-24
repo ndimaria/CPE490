@@ -19,7 +19,7 @@ def recvall(conn, length):
     return buf
 
 #Need to change this host and port name
-def main(host='127.0.0.1', port=5000):
+def main(host='18.217.215.168', port=3000):
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
