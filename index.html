@@ -39,7 +39,7 @@
           switch (event.key) {
             case "ArrowDown":
               console.log('Rawr');
-              io.emit('chat message', 'Down');
+              socket.emit('chat message', 'Down');
               break;}
             });
       });
