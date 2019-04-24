@@ -1,38 +1,8 @@
-""" Xbox 360 controller support for Python
-11/9/13 - Steven Jacobs
-This class module supports reading a connected Xbox controller under Python 2 and 3.
-You'll need to first install xboxdrv:
-    sudo apt-get install xboxdrv
-See http://pingus.seul.org/~grumbel/xboxdrv/ for details on xboxdrv
-Example usage:
-    import xbox
-    joy = xbox.Joystick()         #Initialize joystick
-
-    if joy.A():                   #Test state of the A button (1=pressed, 0=not pressed)
-        print 'A button pressed'
-    x_axis   = joy.leftX()        #X-axis of the left stick (values -1.0 to 1.0)
-    (x,y)    = joy.leftStick()    #Returns tuple containing left X and Y axes (values -1.0 to 1.0)
-    trigger  = joy.rightTrigger() #Right trigger position (values 0 to 1.0)
-
-    joy.close()                   #Cleanup before exit
-All controller buttons are supported.  See code for all functions.
-"""
-
 import subprocess
 import select
 import time
 
 class Joystick:
-
-    """Initializes the joystick/wireless receiver, launching 'xboxdrv' as a subprocess
-    and checking that the wired joystick or wireless receiver is attached.
-    The refreshRate determines the maximnum rate at which events are polled from xboxdrv.
-    Calling any of the Joystick methods will cause a refresh to occur, if refreshTime has elapsed.
-    Routinely call a Joystick method, at least once per second, to avoid overfilling the event buffer.
-
-    Usage:
-        joy = xbox.Joystick()
-    """
     def __init__(self,refreshRate = 30):
         self.proc = subprocess.Popen(['xboxdrv','--no-uinput','--detach-kernel-driver'], stdout=subprocess.PIPE, bufsize=0)
         self.pipe = self.proc.stdout
@@ -66,10 +36,6 @@ class Joystick:
             self.close()
             raise IOError('Unable to detect Xbox controller/receiver - Run python as sudo')
 
-    """Used by all Joystick methods to read the most recent events from xboxdrv.
-    The refreshRate determines the maximum frequency with which events are checked.
-    If a valid event response is found, then the controller is flagged as 'connected'.
-    """
     def refresh(self):
         # Refresh the joystick readings based on regular defined freq
         if self.refreshTime < time.time():
@@ -91,16 +57,6 @@ class Joystick:
                 else:  #Any other response means we have lost wireless or controller battery
                     self.connectStatus = False
 
-    """Return a status of True, when the controller is actively connected.
-    Either loss of wireless signal or controller powering off will break connection.  The
-    controller inputs will stop updating, so the last readings will remain in effect.  It is
-    good practice to only act upon inputs if the controller is connected.  For instance, for
-    a robot, stop all motors if "not connected()".
-
-    An inital controller input, stick movement or button press, may be required before the connection
-    status goes True.  If a connection is lost, the connection will resume automatically when the
-    fault is corrected.
-    """
     def connected(self):
         self.refresh()
         return self.connectStatus
