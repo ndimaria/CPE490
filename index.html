@@ -40,8 +40,8 @@
             case "Down": // IE/Edge specific value
             case "ArrowDown":
               console.log('Rawr');
-              socket.on('chat message', function(event.key){
-                $('#messages').append($('<li>').text(event.key)); // test if Arrowdown can be picked up
+              socket.on('chat message', function(){
+                $('#messages').append($('<li>').text('Down')); // test if Arrowdown can be picked up
               });
               break;}
       });
