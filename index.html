@@ -32,6 +32,18 @@
         socket.on('chat message', function(msg){
           $('#messages').append($('<li>').text(msg));
         });
+        window.addEventListener("keydown", function (event) {
+          if (event.defaultPrevented) {
+            return; // Do nothing if the event was already processed
+          }
+          switch (event.key) {
+            case "Down": // IE/Edge specific value
+            case "ArrowDown":
+              console.log('Rawr');
+              socket.on('chat message', function(event.key){
+                $('#messages').append($('<li>').text(event.key)); // test if Arrowdown can be picked up
+              });
+              break;}
       });
     </script>
   </body>
