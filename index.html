@@ -19,6 +19,7 @@
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="PxGamepad.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       $(function () {
@@ -51,16 +52,28 @@
               break;
             }
         });
-        window.addEventListener("gamepadconnected", function(e) {
-          console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-            e.gamepad.index, e.gamepad.id,
-            e.gamepad.buttons.length, e.gamepad.axes.length);
-        });
+        // start listening for gamepad connection events
+        PxGamepad.prototype.start = function() {
+          this.reset();
+          this.listeners = {
+            'gamepadconnected': jQuery.proxy(function(e) {
+              console.log('Gamepad connected');
+              var gamepad = e.originalEvent.gamepad;
+              if (gamepad.mapping === 'standard') {
+                this.connectedGamepad = gamepad;
+              }
+            }),
+            'gamepaddisconnected': jQuery.proxy(function(e) {
+              console.log('Gamepad disconnected');
+              var gamepad = e.originalEvent.gamepad;
+              if (this.connectedGamepad === gamepad) {
+                this.connectedGamepad = null;
+              }
+            })
+          };
 
-        window.addEventListener("gamepaddisconnected", function(e) {
-          console.log("Gamepad disconnected from index %d: %s",
-            e.gamepad.index, e.gamepad.id);
-        });
+          jQuery(window).on(this.listeners);
+        };
 
       });
     </script>
