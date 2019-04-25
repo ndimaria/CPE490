@@ -52,29 +52,15 @@
               break;
             }
         });
-        // start listening for gamepad connection events
-        PxGamepad.prototype.start = function() {
-          this.reset();
-          this.listeners = {
-            'gamepadconnected': jQuery.proxy(function(e) {
-              console.log('Gamepad connected');
-              var gamepad = e.originalEvent.gamepad;
-              if (gamepad.mapping === 'standard') {
-                this.connectedGamepad = gamepad;
-              }
-            }),
-            'gamepaddisconnected': jQuery.proxy(function(e) {
-              console.log('Gamepad disconnected');
-              var gamepad = e.originalEvent.gamepad;
-              if (this.connectedGamepad === gamepad) {
-                this.connectedGamepad = null;
-              }
-            })
-          };
+        var gamepad = new PxGamepad();
+        gamepad.start();
 
-          jQuery(window).on(this.listeners);
-        };
-
+        pxgamepad.on('a', function() {
+          alert('a fired!');
+        });
+        setInterval(function() {
+          pxgamepad.update();
+        },25);
       });
     </script>
   </body>
