@@ -19,7 +19,9 @@
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
-    <script type="text/javascript" src=__dirname + "PxGamepad.js"></script>
+    <!--
+    <script type="text/javascript" src="PxGamepad.js"></script>
+    -->
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
       $(function () {
@@ -52,15 +54,14 @@
               break;
             }
         });
-        var gamepad = new PxGamepad();
-        gamepad.start();
-
-        pxgamepad.on('a', function() {
-          alert('a fired!');
-        });
-        setInterval(function() {
-          pxgamepad.update();
-        },25);
+        //var gamepad = new PxGamepad();
+        //gamepad.start();
+        //pxgamepad.on('a', function() {
+        //  alert('a fired!');
+        //});
+        //setInterval(function() {
+        //  pxgamepad.update();
+        //},25);
       });
     </script>
   </body>
