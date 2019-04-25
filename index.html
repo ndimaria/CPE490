@@ -36,6 +36,7 @@
           $('#messages').append($('<li>').text(msg));
         });
         window.addEventListener("keydown", function (event) {
+          console.log(document.activeElement);
           if (event.defaultPrevented) {
             return; // Do nothing if the event was already processed
           }
