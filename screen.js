@@ -2,7 +2,6 @@
 
 // Latest file can be found here: https://cdn.webrtc-experiment.com/screen.js
 
-// Muaz Khan     - https://github.com/muaz-khan
 // MIT License   - https://www.webrtc-experiment.com/licence/
 
 // Documentation - https://github.com/muaz-khan/WebRTC-Experiment/tree/master/screen-sharing
@@ -32,12 +31,12 @@
 
     // via: https://bugs.chromium.org/p/chromium/issues/detail?id=487935#c17
     // you can capture screen on Android Chrome >= 55 with flag: "Experimental ScreenCapture android"
-    window.IsAndroidChrome = false;
-    try {
-        if (navigator.userAgent.toLowerCase().indexOf("android") > -1 && /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) {
-            window.IsAndroidChrome = true;
-        }
-    } catch (e) {}
+    //window.IsAndroidChrome = false;
+    //try {
+      //  if (navigator.userAgent.toLowerCase().indexOf("android") > -1 && /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) {
+        //    window.IsAndroidChrome = true;
+      //  }
+    //} catch (e) {}
 
     var isEdge = navigator.userAgent.indexOf('Edge') !== -1 && (!!navigator.msSaveOrOpenBlob || !!navigator.msSaveBlob);
 
@@ -607,9 +606,6 @@
         }
     };
 
-    // var answer = Answer.createAnswer(config);
-    // answer.setRemoteDescription(sdp);
-    // answer.addIceCandidate(candidate);
     var answerConstraints = {
         OfferToReceiveAudio: true,
         OfferToReceiveVideo: true
@@ -683,12 +679,10 @@
         if(adapter.browserDetails.browser === 'safari') return sdp;
         if(isEdge) return sdp;
 
-        // https://github.com/muaz-khan/RTCMultiConnection/blob/master/dev/CodecsHandler.js
         if(typeof CodecsHandler !== 'undefined') {
             sdp = CodecsHandler.preferCodec(sdp, 'vp9');
         }
 
-        // https://github.com/muaz-khan/RTCMultiConnection/blob/master/dev/BandwidthHandler.js
         if (typeof BandwidthHandler !== 'undefined') {
             window.isFirefox = adapter.browserDetails.browser === 'firefox';
 
@@ -706,10 +700,8 @@
             return sdp;
         }
 
-        // removing existing bandwidth lines
         sdp = sdp.replace(/b=AS([^\r\n]+\r\n)/g, '');
 
-        // "300kbit/s" for screen sharing
         sdp = sdp.replace(/a=mid:video\r\n/g, 'a=mid:video\r\nb=AS:300\r\n');
 
         return sdp;
