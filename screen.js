@@ -24,10 +24,10 @@
         };
     }
 
-    if(typeof IceServersHandler === 'undefined') {
+  //  if(typeof IceServersHandler === 'undefined') {
         // https:/cdn.webrtc-experiment.com/IceServersHandler.js
-        console.warn('IceServersHandler.js is recommended.');
-    }
+      //  console.warn('IceServersHandler.js is recommended.');
+    //}
 
     // via: https://bugs.chromium.org/p/chromium/issues/detail?id=487935#c17
     // you can capture screen on Android Chrome >= 55 with flag: "Experimental ScreenCapture android"
@@ -38,7 +38,7 @@
       //  }
     //} catch (e) {}
 
-    var isEdge = navigator.userAgent.indexOf('Edge') !== -1 && (!!navigator.msSaveOrOpenBlob || !!navigator.msSaveBlob);
+    //var isEdge = navigator.userAgent.indexOf('Edge') !== -1 && (!!navigator.msSaveOrOpenBlob || !!navigator.msSaveBlob);
 
     // a middle-agent between public API and the Signaler object
     window.Screen = function(channel) {
