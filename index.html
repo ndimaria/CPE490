@@ -41,6 +41,9 @@
           console.log(messageBox);
           console.log(currentFocus);
           console.log(messageBox === currentFocus);
+          if(messageBox === currentFocus) {
+            return;
+          }
           if (event.defaultPrevented) {
             return; // Do nothing if the event was already processed
           }
