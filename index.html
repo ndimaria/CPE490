@@ -35,9 +35,6 @@
         window.addEventListener("keydown", function (event) {
           var messageBox = document.getElementById('m');
           var currentFocus = document.activeElement;
-          console.log(messageBox);
-          console.log(currentFocus);
-          console.log(messageBox === currentFocus);
           if(messageBox === currentFocus) {
             return;
           }
@@ -68,7 +65,8 @@
         }
 
         var id = uuid();
-        console.log(id);
+        console.log("This user's id is" + id);
+        socket.emit('uid', id, socket);
 
         //START OF GAMEPAD TEST CODE
         var haveEvents = 'ongamepadconnected' in window;
