@@ -14,3 +14,6 @@ Chat application was modified to read in inputs from left/right/up/down keys on 
 4/25/2019 Update:
 Chat application no longer responds to keyboard inputs while focus is in the text box. Started using the Gamepad API for controller support.
 To Do: remove unnecessary HTML coding and differentiate between different button presses.
+
+4/29/2019 Update:
+On joining the chat, a user now creates a unique ID for themselves and sends it to the server, who stores it. The server then sends a message to all connected users that this user has now joined.
