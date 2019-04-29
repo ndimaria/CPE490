@@ -59,6 +59,17 @@
               break;
             }
         });
+        //Create a random User ID
+        function uuid() {
+          function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+          }
+          return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+        }
+
+        var id = uuid();
+        console.log(id);
+
         //START OF GAMEPAD TEST CODE
         var haveEvents = 'ongamepadconnected' in window;
         var controllers = {};
