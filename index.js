@@ -23,7 +23,7 @@ io.on('connection', function(socket){
   socket.on('uid', function(uid, socket){
     console.log('Received uid: ', uid);
     let newUser = {
-      userID: uid;
+      userID: uid
     };
     sockets[newUser.userID] = socket;
     users[newUser.userID] = newUser;
