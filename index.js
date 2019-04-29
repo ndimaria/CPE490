@@ -20,12 +20,11 @@ io.on('connection', function(socket){
     io.emit('chat message', msg);
   });
   //More identifying information should be passed through this function
-  socket.on('uid', function(uid, userSocket){
+  socket.on('uid', function(uid){
     console.log('Received uid: ', uid);
     let newUser = {
       userID: uid
     };
-    sockets[newUser.userID] = userSocket;
     users[newUser.userID] = newUser;
   });
 });
