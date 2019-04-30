@@ -18,7 +18,7 @@
     }
 
     if(typeof IceServersHandler === 'undefined') {
-         https:/cdn.webrtc-experiment.com/IceServersHandler.js
+         //https:/cdn.webrtc-experiment.com/IceServersHandler.js
         console.warn('IceServersHandler.js is recommended.');
     }
 
