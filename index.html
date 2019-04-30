@@ -123,7 +123,7 @@
           }
 
           //document.body.appendChild(d);
-          document.appendChild(d);
+          document.body.insertBefore(d, document.getElementById('messages'));
           requestAnimationFrame(updateStatus);
         }
 
