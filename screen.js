@@ -1,10 +1,3 @@
-// Last updated On: May 12, 2018
-
-// Latest file can be found here: https://cdn.webrtc-experiment.com/screen.js
-
-// MIT License   - https://www.webrtc-experiment.com/licence/
-
-// Documentation - https://github.com/muaz-khan/WebRTC-Experiment/tree/master/screen-sharing
 
 (function() {
 
@@ -24,21 +17,21 @@
         };
     }
 
-  //  if(typeof IceServersHandler === 'undefined') {
-        // https:/cdn.webrtc-experiment.com/IceServersHandler.js
-      //  console.warn('IceServersHandler.js is recommended.');
-    //}
+    if(typeof IceServersHandler === 'undefined') {
+         https:/cdn.webrtc-experiment.com/IceServersHandler.js
+        console.warn('IceServersHandler.js is recommended.');
+    }
 
-    // via: https://bugs.chromium.org/p/chromium/issues/detail?id=487935#c17
-    // you can capture screen on Android Chrome >= 55 with flag: "Experimental ScreenCapture android"
-    //window.IsAndroidChrome = false;
-    //try {
-      //  if (navigator.userAgent.toLowerCase().indexOf("android") > -1 && /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) {
-        //    window.IsAndroidChrome = true;
-      //  }
-    //} catch (e) {}
+     //via: https://bugs.chromium.org/p/chromium/issues/detail?id=487935#c17
+     //you can capture screen on Android Chrome >= 55 with flag: "Experimental ScreenCapture android"
+    window.IsAndroidChrome = false;
+    try {
+        if (navigator.userAgent.toLowerCase().indexOf("android") > -1 && /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) {
+            window.IsAndroidChrome = true;
+        }
+    } catch (e) {}
 
-    //var isEdge = navigator.userAgent.indexOf('Edge') !== -1 && (!!navigator.msSaveOrOpenBlob || !!navigator.msSaveBlob);
+    var isEdge = navigator.userAgent.indexOf('Edge') !== -1 && (!!navigator.msSaveOrOpenBlob || !!navigator.msSaveBlob);
 
     // a middle-agent between public API and the Signaler object
     window.Screen = function(channel) {
