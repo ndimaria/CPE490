@@ -85,7 +85,8 @@
           d.setAttribute("id", "controller" + gamepad.index);
 
           var t = document.createElement("h1");
-          t.appendChild(document.createTextNode("gamepad: " + gamepad.id));
+          //t.appendChild(document.createTextNode("gamepad: " + gamepad.id));
+          t.insertBefore(document.createTextNode("gamepad: " + gamepad.id), document.getElementById('m'));
           d.appendChild(t);
 
           var b = document.createElement("div");
