@@ -295,9 +295,9 @@
               if (pressed) {
                 console.log('Button pressed');
                 b.className = "button pressed";
-                console.log(b);
-                console.log(val);
-                //socket.emit('chat message', gamepad.id + "Has pressed the button" + b);
+                //console.log(b);
+                //console.log(val);
+                socket.emit('chat message', gamepad.id + "Has pressed the button" + b.textContent);
               } else {
                 b.className = "button";
               }
