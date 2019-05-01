@@ -1,7 +1,10 @@
 const HTTPS_PORT = 3000;
+const nodeStatic = require('node-static');
 const fs = require('fs');
-
+const https = require('https');
+const http = require('http');
 const express = require('express')();
+const socketIO = require('socket.io');
 //var http = require('http').createServer(app);
 //var io = require('socket.io')(http);
 
