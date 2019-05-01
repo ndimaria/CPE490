@@ -17,7 +17,6 @@ const certOptions = {
 
 app = express();
 let httpsServer = https.Server(certOptions, app);
-httpsServer.listen(HTTPS_PORT);
 
 app.use(express.static('public'));
 let io = socketIO.listen(httpsServer);
@@ -46,6 +45,10 @@ io.on('connection', function(socket){
     users[newUser.userID] = newUser;
     io.emit('chat message', "User " + uid + " has joined the chat!");
   });
+});
+
+httpsServer.listen(HTTPS_PORT, function(){
+  console.log('listening on *:3000');
 });
 
 //http.listen(3000, function(){
