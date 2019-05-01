@@ -166,7 +166,7 @@
           var string = id + " says: " + msg;
           messageElement.style.color = color;
           messageElement.appendChild(string);
-          $('#messages').append($('<li>').text(messageElement));
+          $('#messages').append(messageElement);
           //$('#messages').append($('<li>').text(msg));
         });
         window.addEventListener("keydown", function (event) {

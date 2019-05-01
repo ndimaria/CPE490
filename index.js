@@ -56,6 +56,7 @@ io.on('connection', function(socket){
     let newUser = {
       userID: uid
     };
+    console.log(color)
     users[newUser.userID] = newUser;
     io.emit('chat message', "User " + uid + " has joined the chat!");
   });
