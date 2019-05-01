@@ -157,7 +157,7 @@
         var socket = io();
         $('form').submit(function(e){
           e.preventDefault(); //prevents page reloading
-          socket.emit('chat message', $('#m').val());
+          socket.emit('chat message', $('#m').val(),id);
           $('#m').val('');
           return false;
         });
