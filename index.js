@@ -52,15 +52,7 @@ io.on('connection', function(socket){
   //More identifying information should be passed through this function
   socket.on('uid', function(uid,color){
     console.log('Received uid: ', uid);
-    if (isEmpty(ID_Info)){
-      ID_Info.uid = color;
-    }
-    else{
-      if(!(id in ID_Info)){
-        //put key in with value
-        ID_Info.uid = color;
-      }
-    }
+    ID_Info.uid = color;
     let newUser = {
       userID: uid
     };
