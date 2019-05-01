@@ -8,8 +8,8 @@ var http = require('http').createServer(app);
 let users = {};
 
 const certOptions = {
-  key: fs.readFileSync('/etc/letsencrypt/live/demo.roomsfh.org/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/demo.roomsfh.org/fullchain.pem')
+  key: fs.readFileSync('/home/vgcontrol/CPE490/privkey.pem'),
+  cert: fs.readFileSync('/home/vgcontrol/CPE490/fullchain.pem')
 };
 
 let appl = express();
