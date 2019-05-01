@@ -18,7 +18,7 @@ const certOptions = {
 app = express();
 let httpsServer = https.Server(certOptions, app);
 
-app.use(express.static('public'));
+app.use('static', express.static(path.join(__dirname + 'public')));
 let io = socketIO.listen(httpsServer);
 
 //let sockets = {};
