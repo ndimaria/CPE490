@@ -162,12 +162,7 @@
           return false;
         });
         socket.on('chat message', function(msg,id,color){
-          var messageElement = document.createElement('p');
-          var string = id + " says: " + msg;
-          messageElement.style.color = color;
-          messageElement.appendChild(string);
-          $('#messages').append(messageElement);
-          //$('#messages').append($('<li>').text(msg));
+          $('#messages').append($('<li>').text("User "+ id +" says: " + msg));
         });
         window.addEventListener("keydown", function (event) {
           var messageBox = document.getElementById('m');
