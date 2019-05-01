@@ -164,9 +164,9 @@
         socket.on('chat message', function(msg,id,color){
           var messageElement = document.createElement('p');
           var string = id + " says: " + msg;
-          messageElement.style.color = data.color;
+          messageElement.style.color = color;
           messageElement.appendChild(string);
-          $('#messages').append($messageElement);
+          $('#messages').append($('<li>').text(messageElement));
           //$('#messages').append($('<li>').text(msg));
         });
         window.addEventListener("keydown", function (event) {
