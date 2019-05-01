@@ -1,8 +1,22 @@
+const HTTPS_PORT = 3000;
+
 var app = require('express')();
 var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+//var io = require('socket.io')(http);
 
 let users = {};
+
+const certOptions = {
+  key: fs.readFileSync('privkey.pem');
+  cert: fs.readFileSync('fullchain.pem');
+};
+
+let appl = express();
+let httpsServer = https.Server(certOptions, appl);
+httpsServer.listen(HTTPS_PORT);
+
+appl.use(express.static('public'));
+let io = socketIO.listen(httpsServer);
 
 //let sockets = {};
 
@@ -30,6 +44,6 @@ io.on('connection', function(socket){
   });
 });
 
-http.listen(3000, function(){
-  console.log('listening on *:3000');
-});
+//http.listen(3000, function(){
+//  console.log('listening on *:3000');
+//});
