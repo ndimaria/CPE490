@@ -6,6 +6,7 @@ const express = require('express')();
 const socketIO = require('socket.io');
 //var http = require('http').createServer(app);
 //var io = require('socket.io')(http);
+var app;
 
 let users = {};
 
