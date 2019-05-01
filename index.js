@@ -24,7 +24,7 @@ let io = socketIO.listen(httpsServer);
 
 //let sockets = {};
 
-express.get('/', function(req, res){
+app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
