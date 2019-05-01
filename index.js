@@ -15,7 +15,7 @@ const certOptions = {
   cert: fs.readFileSync('/home/vgcontrol/CPE490/fullchain.pem')
 };
 
-let app = express();
+app = express();
 let httpsServer = https.Server(certOptions, app);
 httpsServer.listen(HTTPS_PORT);
 
