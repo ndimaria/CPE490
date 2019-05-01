@@ -21,6 +21,7 @@ let httpsServer = https.Server(certOptions, app);
 
 //app.use('/static', express.static());
 //app.use('/static', express.static(__dirname + '/public'));
+console.log(__dirname);
 app.use("/public", express.static(path.resolve(__dirname, 'public')));
 
 let io = socketIO.listen(httpsServer);
