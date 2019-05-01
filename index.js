@@ -1,7 +1,7 @@
 const HTTPS_PORT = 3000;
 const fs = require('fs');
 
-var app = require('express')();
+const express = require('express')();
 var http = require('http').createServer(app);
 //var io = require('socket.io')(http);
 
@@ -12,16 +12,16 @@ const certOptions = {
   cert: fs.readFileSync('/home/vgcontrol/CPE490/fullchain.pem')
 };
 
-let appl = express();
-let httpsServer = https.Server(certOptions, appl);
+let app = express();
+let httpsServer = https.Server(certOptions, app);
 httpsServer.listen(HTTPS_PORT);
 
-appl.use(express.static('public'));
+app.use(express.static('public'));
 let io = socketIO.listen(httpsServer);
 
 //let sockets = {};
 
-app.get('/', function(req, res){
+express.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
