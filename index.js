@@ -37,19 +37,30 @@ let io = socketIO.listen(httpsServer);
 app.get('/', function(req, res){
   res.sendFile(__dirname + "/public/index.html");
 });
+///////////dictionary///////////
+var ID_Info = {};
 
 io.on('connection', function(socket){
   console.log('a user connected');
   socket.on('disconnect', function(){
     console.log('user disconnected');
   });
-  socket.on('chat message', function(msg){
+  socket.on('chat message', function(msg,id){
     //console.log('message: ' + msg);
-    io.emit('chat message', msg);
+    io.emit('chat message', msg, id, ID_Info.id);
   });
   //More identifying information should be passed through this function
-  socket.on('uid', function(uid){
+  socket.on('uid', function(uid,color){
     console.log('Received uid: ', uid);
+    if (isEmpty(ID_Info)){
+      ID_Info.uid = color;
+    }
+    else{
+      if(!(id in ID_Info)){
+        //put key in with value
+        ID_Info.uid = color;
+      }
+    }
     let newUser = {
       userID: uid
     };

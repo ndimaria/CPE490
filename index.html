@@ -161,8 +161,13 @@
           $('#m').val('');
           return false;
         });
-        socket.on('chat message', function(msg){
-          $('#messages').append($('<li>').text(msg));
+        socket.on('chat message', function(msg,id,color){
+          var messageElement = document.createElement('p');
+          var string = id + " says: " + msg;
+          messageElement.style.color = data.color;
+          messageElement.appendChild(string);
+          $('#messages').append($('<li>').text(messageElement));
+          //$('#messages').append($('<li>').text(msg));
         });
         window.addEventListener("keydown", function (event) {
           var messageBox = document.getElementById('m');
@@ -175,16 +180,16 @@
           }
           switch (event.key) {
             case "ArrowDown":
-              socket.emit('chat message', 'Down');
+              socket.emit('chat message', 'Down',id);
               break;
             case "ArrowUp":
-              socket.emit('chat message', 'Up');
+              socket.emit('chat message', 'Up',id);
               break;
             case "ArrowLeft":
-              socket.emit('chat message', 'Left');
+              socket.emit('chat message', 'Left',id);
               break;
             case "ArrowRight":
-              socket.emit('chat message', 'Right');
+              socket.emit('chat message', 'Right',id);
               break;
             }
         });
@@ -197,8 +202,9 @@
         }
 
         var id = uuid();
+        var color = "blue";
         console.log("This user's id is" + id);
-        socket.emit('uid', id);
+        socket.emit('uid', id, color);
 
         //START OF GAMEPAD TEST CODE
         var haveEvents = 'ongamepadconnected' in window;
