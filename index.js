@@ -4,6 +4,7 @@ const https = require('https');
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
+const path = require('path');
 //var http = require('http').createServer(app);
 //var io = require('socket.io')(http);
 var app;
@@ -19,14 +20,15 @@ app = express();
 let httpsServer = https.Server(certOptions, app);
 
 //app.use('/static', express.static());
-app.use('/static', express.static(__dirname + '/public'));
+//app.use('/static', express.static(__dirname + '/public'));
+app.use("/public", express.static(path.resolve(__dirname, 'public')));
 
 let io = socketIO.listen(httpsServer);
 
 //let sockets = {};
 
 app.get('/', function(req, res){
-  res.sendFile(__dirname + 'index.html');
+  res.sendFile(__dirname + "/public/index.html");
 });
 
 io.on('connection', function(socket){
