@@ -18,13 +18,13 @@ const certOptions = {
 app = express();
 let httpsServer = https.Server(certOptions, app);
 
-app.use(express.static('public'));
+app.use(express.static('public/'));
 let io = socketIO.listen(httpsServer);
 
 //let sockets = {};
 
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/public/index.html');
+  res.sendFile(__dirname + '/index.html');
 });
 
 io.on('connection', function(socket){
