@@ -161,7 +161,7 @@
           $('#m').val('');
           return false;
         });
-        socket.on('chat message', function(msg,id,color){
+        socket.on('chat message', function(msg,id){
           $('#messages').append($('<li>').text("User "+ id +" says: " + msg));
         });
         window.addEventListener("keydown", function (event) {

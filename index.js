@@ -47,7 +47,7 @@ io.on('connection', function(socket){
   });
   socket.on('chat message', function(msg,id){
     //console.log('message: ' + msg);
-    io.emit('chat message', msg, id, ID_Info.id);
+    io.emit('chat message', msg, id);
   });
   //More identifying information should be passed through this function
   socket.on('uid', function(uid,color){
