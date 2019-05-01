@@ -298,7 +298,7 @@
                 //console.log(b);
                 //console.log(controller);
                 //console.log(val);
-                socket.broadcast.emit('chat message', controller.id + "Has pressed the button" + b.textContent);
+                socket.emit('chat message', controller.id + "Has pressed the button" + b.textContent);
               } else {
                 b.className = "button";
               }
