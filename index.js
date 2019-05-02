@@ -6,6 +6,7 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 const path = require('path');
+var redirectToHTTPS = require('express-http-to-https').redirectToHTTPS
 //var http = require('http').createServer(app);
 //var io = require('socket.io')(http);
 var app;
@@ -24,6 +25,7 @@ const certOptions = {
 };
 
 app = express();
+app.use(redirectToHTTPS());
 let httpsServer = https.Server(certOptions, app);
 
 app.all('/', function(req, res, next) {
