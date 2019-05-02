@@ -1,4 +1,5 @@
 const HTTPS_PORT = 3000;
+const HTTP_PORT = 4000;
 const fs = require('fs');
 const https = require('https');
 const http = require('http');
@@ -8,6 +9,11 @@ const path = require('path');
 //var http = require('http').createServer(app);
 //var io = require('socket.io')(http);
 var app;
+
+var httpServer = express.createServer();
+http.get('*', function(req, res){
+  res.redirect('https://' + req.headers.host + req.url);
+});
 
 let users = {};
 
@@ -61,6 +67,7 @@ io.on('connection', function(socket){
   });
 });
 
+httpServer.listen(HTTP_PORT);
 httpsServer.listen(HTTPS_PORT, function(){
   console.log('listening on *:3000');
 });
