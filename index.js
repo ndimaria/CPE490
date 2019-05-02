@@ -11,7 +11,7 @@ const path = require('path');
 var app;
 
 var httpServer = http.createServer(express);
-http.get('*', function(req, res){
+httpServer.get('*', function(req, res){
   res.redirect('https://' + req.headers.host + req.url);
 });
 
