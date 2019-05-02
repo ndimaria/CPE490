@@ -13,7 +13,7 @@ var app;
 var httpApp = express();
 var httpServer = http.createServer(express);
 httpApp.get("*", function(req, res){
-  res.redirect('https://' + req.headers.host + req.url);
+  res.redirect('https://demo.roomsfh.org:3000');
 });
 
 let users = {};
