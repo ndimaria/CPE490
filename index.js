@@ -1,5 +1,5 @@
 const HTTPS_PORT = 3000;
-//const HTTP_PORT = 4000;
+const HTTP_PORT = 4000;
 const fs = require('fs');
 const https = require('https');
 const http = require('http');
@@ -11,11 +11,11 @@ var redirectToHTTPS = require('express-http-to-https').redirectToHTTPS
 //var io = require('socket.io')(http);
 var app;
 
-//var httpApp = express();
-//var httpServer = http.createServer(express);
-//httpApp.get("*", function(req, res){
-//  res.redirect('https://demo.roomsfh.org:3000');
-//});
+var httpApp = express();
+var httpServer = http.createServer(express);
+httpApp.get("*", function(req, res){
+  res.redirect('https://demo.roomsfh.org:3000');
+});
 
 let users = {};
 
@@ -70,7 +70,7 @@ io.on('connection', function(socket){
   });
 });
 
-//httpServer.listen(HTTP_PORT);
+httpServer.listen(HTTP_PORT);
 httpsServer.listen(HTTPS_PORT, function(){
   console.log('listening on *:3000');
 });
