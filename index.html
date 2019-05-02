@@ -157,19 +157,12 @@
         var socket = io();
         $('form').submit(function(e){
           e.preventDefault(); //prevents page reloading
-          socket.emit('chat message', $('#m').val(),id);
+          socket.emit('chat message', $('#m').val());
           $('#m').val('');
           return false;
         });
         socket.on('chat message', function(msg){
-          var color = "blue"
-          var messageNode = document.createTextNode(msg),
-          messageElement = document.createElement('p');
-
-          messageElement.style.color = color;
-          messageElement.appendChild(messageNode);
-          document.getElementById('messages').appendChild(messageElement);
-          //$('#messages').append($('<li>').text(msg));
+          $('#messages').append($('<li>').text(msg));
         });
 
         window.addEventListener("keydown", function (event) {
