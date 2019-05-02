@@ -38,7 +38,7 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + "/public/index.html");
 });
 ///////////dictionary///////////
-var ID_Info = {};
+//var ID_Info = {};
 
 io.on('connection', function(socket){
   console.log('a user connected');
@@ -56,7 +56,6 @@ io.on('connection', function(socket){
     let newUser = {
       userID: uid
     };
-    console.log(color);
     users[newUser.userID] = newUser;
     io.emit('chat message', "User " + uid + " has joined the chat!");
   });
