@@ -10,7 +10,7 @@ const path = require('path');
 //var io = require('socket.io')(http);
 var app;
 
-var http = http.createServer(express);
+var httpServer = http.createServer(express);
 httpServer.get("*", function(req, res){
   res.redirect('https://' + req.headers.host + req.url);
 });
