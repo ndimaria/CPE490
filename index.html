@@ -177,12 +177,8 @@
         });
         socket.on('chat message', function(msg){
           //test for id check here later
-          var messageNode = msg;
-          var messageEle = document.createElement('p');
-          messageEle.style.color = 'blue';
-          messageEle.appendChild(messageNode);
-          document.getElementById('messages').appendChild(messageElement);
-          //$('#messages').append($('<li>').holder);
+          console.log(id);
+          $('#messages').append($('<li>').text(msg));
         });
 
         window.addEventListener("keydown", function (event) {
