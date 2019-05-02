@@ -52,7 +52,7 @@ io.on('connection', function(socket){
   //More identifying information should be passed through this function
   socket.on('uid', function(uid){
     console.log('Received uid: ', uid);
-    ID_Info.uid = color;
+    //ID_Info.uid = color;
     let newUser = {
       userID: uid
     };
