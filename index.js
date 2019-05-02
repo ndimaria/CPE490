@@ -47,10 +47,10 @@ io.on('connection', function(socket){
   });
   socket.on('chat message', function(msg,id){
     //console.log('message: ' + msg);
-    io.emit('chat message', msg, id);
+    io.emit('chat message', msg);
   });
   //More identifying information should be passed through this function
-  socket.on('uid', function(uid,color){
+  socket.on('uid', function(uid){
     console.log('Received uid: ', uid);
     ID_Info.uid = color;
     let newUser = {

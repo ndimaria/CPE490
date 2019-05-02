@@ -161,8 +161,8 @@
           $('#m').val('');
           return false;
         });
-        socket.on('chat message', function(msg,id){
-          $('#messages').append($('<li>').text(id + msg));
+        socket.on('chat message', function(msg){
+          $('#messages').append($('<li>').text(msg));
         });
 
         window.addEventListener("keydown", function (event) {
@@ -177,16 +177,16 @@
           }
           switch (event.key) {
             case "ArrowDown":
-              socket.emit('chat message', 'Down',id);
+              socket.emit('chat message', 'Down');
               break;
             case "ArrowUp":
-              socket.emit('chat message', 'Up',id);
+              socket.emit('chat message', 'Up');
               break;
             case "ArrowLeft":
-              socket.emit('chat message', 'Left',id);
+              socket.emit('chat message', 'Left');
               break;
             case "ArrowRight":
-              socket.emit('chat message', 'Right',id);
+              socket.emit('chat message', 'Right');
               break;
             }
         });
@@ -201,7 +201,7 @@
         var id = uuid();
         var color = "blue";
         console.log("This user's id is" + id);
-        socket.emit('uid', id, color);
+        socket.emit('uid', id);
 
         //START OF GAMEPAD TEST CODE
         var haveEvents = 'ongamepadconnected' in window;
