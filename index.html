@@ -162,7 +162,7 @@
           return false;
         });
         socket.on('chat message', function(msg,id){
-          $('#messages').append($('<li>').text(msg));
+          $('#messages').append($('<li>').text(id + msg));
         });
 
         window.addEventListener("keydown", function (event) {
