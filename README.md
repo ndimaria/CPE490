@@ -17,3 +17,6 @@ To Do: remove unnecessary HTML coding and differentiate between different button
 
 4/29/2019 Update:
 On joining the chat, a user now creates a unique ID for themselves and sends it to the server, who stores it. The server then sends a message to all connected users that this user has now joined.
+
+5/6/2019 Update:
+The service has been moved from http to https for both security reasons and to support WebRTC screensharing. Support for Access Control Allow Origin headers is in progress.
