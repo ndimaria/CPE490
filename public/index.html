@@ -2,14 +2,13 @@
 <html>
   <head>
     <title>Socket.IO chat</title>
-    <!-- Nathan we need to check to limit screen sharing at least-->
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
       form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
       form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
       form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; color: #16c616;}
+      #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
     </style>
@@ -19,158 +18,24 @@
     <form action="">
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
-    <script src="/socket.io/socket.io.js"></script>
-    <!--Screensharing scripts-->
-    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-    <script src="https://cdn.webrtc-experiment.com/IceServersHandler.js"></script>
-    <script src="https://cdn.webrtc-experiment.com/getScreenId.js"> </script>
-    <script src="https://cdn.webrtc-experiment.com/CodecsHandler.js"></script>
-    <script src="https://cdn.webrtc-experiment.com/BandwidthHandler.js"></script>
-    <script src="https://cdn.webrtc-experiment.com/screen.js"> </script>
-    <script src="http://cdn.webrtc-experiment.com/socket.io/PeerConnection.js"></script>
-    <!--End of Screensharing scripts-->
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-
-    <!--Start of Screensharing Code-->
-    <section class="experiment">
-        <section class="hide-after-join">
-            <span>
-                Private ?? <a href="/screen-sharing/" target="_blank" title="Open this link for private screen sharing!"><code><strong id="unique-token">#123456789</strong></code></a>
-            </span>
-            <input type="text" id="user-name" placeholder="Your Name">
-            <button id="share-screen" class="setup">Share Your Screen</button>
-        </section>
-
-        <!-- list of all available broadcasting rooms -->
-        <table style="width: 100%;" id="rooms-list" class="hide-after-join"></table>
-
-        <!-- local/remote videos container -->
-        <div id="videos-container"></div>
-    </section>
-
+    <script src="controllerTest.js"></script>
     <script>
-        // Muaz Khan     - https://github.com/muaz-khan
-        // MIT License   - https://www.webrtc-experiment.com/licence/
-        // Documentation - https://github.com/muaz-khan/WebRTC-Experiment/tree/master/screen-sharing
-        var videosContainer = document.getElementById("videos-container") || document.body;
-        var roomsList = document.getElementById('rooms-list');
-        var screensharing = new Screen();
-        var channel = location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
-        var sender = Math.round(Math.random() * 999999999) + 999999999;
-        // https://github.com/muaz-khan/WebRTC-Experiment/tree/master/socketio-over-nodejs
-        //var SIGNALING_SERVER = 'https://socketio-over-nodejs2.herokuapp.com:443/';
-        var SIGNALING_SERVER = 'https://demo.roomsfh.org:9559';
-        io.connect(SIGNALING_SERVER).emit('new-channel', {
-            channel: channel,
-            sender: sender
-        });
-        var socket = io.connect(SIGNALING_SERVER + channel);
-        socket.on('connect', function () {
-            // setup peer connection & pass socket object over the constructor!
-        });
-        socket.send = function (message) {
-            socket.emit('message', {
-                sender: sender,
-                data: message
-            });
-        };
-        screensharing.openSignalingChannel = function(callback) {
-            return socket.on('message', callback);
-        };
-        screensharing.onscreen = function(_screen) {
-            var alreadyExist = document.getElementById(_screen.userid);
-            if (alreadyExist) return;
-            if (typeof roomsList === 'undefined') roomsList = document.body;
-            var tr = document.createElement('tr');
-            tr.id = _screen.userid;
-            tr.innerHTML = '<td>' + _screen.userid + ' shared his screen.</td>' +
-                    '<td><button class="join">View</button></td>';
-            roomsList.insertBefore(tr, roomsList.firstChild);
-            var button = tr.querySelector('.join');
-            button.setAttribute('data-userid', _screen.userid);
-            button.setAttribute('data-roomid', _screen.roomid);
-            button.onclick = function() {
-                var button = this;
-                button.disabled = true;
-                var _screen = {
-                    userid: button.getAttribute('data-userid'),
-                    roomid: button.getAttribute('data-roomid')
-                };
-                screensharing.view(_screen);
-            };
-        };
-        // on getting each new screen
-        screensharing.onaddstream = function(media) {
-            media.video.id = media.userid;
-            var video = media.video;
-            videosContainer.insertBefore(video, videosContainer.firstChild);
-            rotateVideo(video);
-            var hideAfterJoin = document.querySelectorAll('.hide-after-join');
-            for(var i = 0; i < hideAfterJoin.length; i++) {
-                hideAfterJoin[i].style.display = 'none';
-            }
-            if(media.type === 'local') {
-                addStreamStopListener(media.stream, function() {
-                    location.reload();
-                });
-            }
-        };
-        // using firebase for signaling
-        // screen.firebase = 'signaling';
-        // if someone leaves; just remove his screen
-        screensharing.onuserleft = function(userid) {
-            var video = document.getElementById(userid);
-            if (video && video.parentNode) video.parentNode.removeChild(video);
-            // location.reload();
-        };
-        // check pre-shared screens
-        screensharing.check();
-        document.getElementById('share-screen').onclick = function() {
-            var username = document.getElementById('user-name');
-            username.disabled = this.disabled = true;
-            screensharing.isModerator = true;
-            screensharing.userid = username.value;
-            screensharing.share();
-        };
-        function rotateVideo(video) {
-            video.style[navigator.mozGetUserMedia ? 'transform' : '-webkit-transform'] = 'rotate(0deg)';
-            setTimeout(function() {
-                video.style[navigator.mozGetUserMedia ? 'transform' : '-webkit-transform'] = 'rotate(360deg)';
-            }, 1000);
-        }
-        (function() {
-            var uniqueToken = document.getElementById('unique-token');
-            if (uniqueToken)
-                if (location.hash.length > 2) uniqueToken.parentNode.parentNode.parentNode.innerHTML = '<h2 style="text-align:center; display: block"><a href="' + location.href + '" target="_blank">Right click to copy & share this private link</a></h2>';
-                else uniqueToken.innerHTML = uniqueToken.parentNode.parentNode.href = '#' + (Math.random() * new Date().getTime()).toString(36).toUpperCase().replace( /\./g , '-');
-        })();
-        screensharing.onNumberOfParticipantsChnaged = function(numberOfParticipants) {
-            if(!screensharing.isModerator) return;
-            document.title = numberOfParticipants + ' users are viewing your screen!';
-            var element = document.getElementById('number-of-participants');
-            if (element) {
-                element.innerHTML = numberOfParticipants + ' users are viewing your screen!';
-            }
-        };
+    window.addEventListener("gamepadconnected", function(e) {
+      console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+        e.gamepad.index, e.gamepad.id,
+        e.gamepad.buttons.length, e.gamepad.axes.length);
+    });
+
+    window.addEventListener("gamepaddisconnected", function(e) {
+      console.log("Gamepad disconnected from index %d: %s",
+        e.gamepad.index, e.gamepad.id);
+    });
+
     </script>
-    <!--End of Scrensharing Code-->
-
+  <!--
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-    var id = "nothing"
       $(function () {
-        //Create a random User ID
-        function uuid() {
-          function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-          }
-          return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-        }
-
-        var id = uuid();
-        console.log("This user's id is" + id);
-        socket.emit('uid', id);
-
-
         var socket = io();
         $('form').submit(function(e){
           e.preventDefault(); //prevents page reloading
@@ -179,185 +44,10 @@
           return false;
         });
         socket.on('chat message', function(msg){
-          //test for id check here later
-          console.log(id);
           $('#messages').append($('<li>').text(msg));
         });
-
-        window.addEventListener("keydown", function (event) {
-          //test out color change here
-          var messageBox = document.getElementById('m');
-          var currentFocus = document.activeElement;
-          if(messageBox === currentFocus) {
-            return;
-          }
-          if (event.defaultPrevented) {
-            return; // Do nothing if the event was already processed
-          }
-          switch (event.key) {
-            case "ArrowDown":
-              socket.emit('chat message', 'Down');
-              break;
-            case "ArrowUp":
-              socket.emit('chat message', 'Up');
-              break;
-            case "ArrowLeft":
-              socket.emit('chat message', 'Left');
-              break;
-            case "ArrowRight":
-              socket.emit('chat message', 'Right');
-              break;
-            }
-        });
-        //Create a random User ID
-        //function uuid() {
-          //function s4() {
-            //return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-          //}
-          //return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-        //}
-
-        //var id = uuid();
-        //console.log("This user's id is" + id);
-        //socket.emit('uid', id);
-
-        //START OF GAMEPAD TEST CODE
-        var haveEvents = 'ongamepadconnected' in window;
-        var controllers = {};
-
-        function connecthandler(e) {
-          addgamepad(e.gamepad);
-        }
-
-        function addgamepad(gamepad) {
-          controllers[gamepad.index] = gamepad;
-
-          var d = document.createElement("div");
-          d.setAttribute("id", "controller" + gamepad.index);
-
-          var t = document.createElement("h1");
-          t.appendChild(document.createTextNode("gamepad: " + gamepad.id));
-          //t.insertBefore(document.createTextNode("gamepad: " + gamepad.id), document.getElementById('m'));
-          d.appendChild(t);
-
-          var b = document.createElement("div");
-          b.className = "buttons";
-          for (var i = 0; i < gamepad.buttons.length; i++) {
-            var e = document.createElement("span");
-            e.className = "button";
-            //e.id = "b" + i;
-            e.innerHTML = i;
-            b.appendChild(e);
-          }
-
-          d.appendChild(b);
-
-          var a = document.createElement("div");
-          a.className = "axes";
-
-          for (var i = 0; i < gamepad.axes.length; i++) {
-            var p = document.createElement("progress");
-            p.className = "axis";
-            //p.id = "a" + i;
-            p.setAttribute("max", "2");
-            p.setAttribute("value", "1");
-            p.innerHTML = i;
-            a.appendChild(p);
-          }
-
-          d.appendChild(a);
-
-          // See https://github.com/luser/gamepadtest/blob/master/index.html
-          var start = document.getElementById("start");
-          if (start) {
-            start.style.display = "none";
-          }
-
-          //document.body.appendChild(d);
-          document.body.insertBefore(d, document.getElementById('messages'));
-          requestAnimationFrame(updateStatus);
-        }
-
-        function disconnecthandler(e) {
-          removegamepad(e.gamepad);
-        }
-
-        function removegamepad(gamepad) {
-          var d = document.getElementById("controller" + gamepad.index);
-          document.body.removeChild(d);
-          delete controllers[gamepad.index];
-        }
-
-        function updateStatus() {
-          if (!haveEvents) {
-            scangamepads();
-          }
-
-          var i = 0;
-          var j;
-
-          for (j in controllers) {
-            var controller = controllers[j];
-            var d = document.getElementById("controller" + j);
-            var buttons = d.getElementsByClassName("button");
-
-            for (i = 0; i < controller.buttons.length; i++) {
-              var b = buttons[i];
-              var val = controller.buttons[i];
-              var pressed = val == 1.0;
-              if (typeof(val) == "object") {
-                pressed = val.pressed;
-                val = val.value;
-              }
-
-              var pct = Math.round(val * 100) + "%";
-              b.style.backgroundSize = pct + " " + pct;
-
-              if (pressed) {
-                console.log('Button pressed');
-                b.className = "button pressed";
-                //console.log(b);
-                //console.log(controller);
-                //console.log(val);
-                socket.emit('chat message', controller.id + "Has pressed the button" + b.textContent);
-              } else {
-                b.className = "button";
-              }
-            }
-
-            var axes = d.getElementsByClassName("axis");
-            for (i = 0; i < controller.axes.length; i++) {
-              var a = axes[i];
-              a.innerHTML = i + ": " + controller.axes[i].toFixed(4);
-              a.setAttribute("value", controller.axes[i] + 1);
-            }
-          }
-
-          requestAnimationFrame(updateStatus);
-        }
-
-        function scangamepads() {
-          var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
-          for (var i = 0; i < gamepads.length; i++) {
-            if (gamepads[i]) {
-              if (gamepads[i].index in controllers) {
-                controllers[gamepads[i].index] = gamepads[i];
-              } else {
-                addgamepad(gamepads[i]);
-              }
-            }
-          }
-        }
-
-
-        window.addEventListener("gamepadconnected", connecthandler);
-        window.addEventListener("gamepaddisconnected", disconnecthandler);
-
-        if (!haveEvents) {
-          setInterval(scangamepads, 500);
-        }
-        //END OF GAMEPAD TEST CODE
       });
     </script>
+  -->
   </body>
 </html>
