@@ -36,7 +36,7 @@ io.set('transports', [
 
 var channels = {};
 
-io.sockets.on('connection', function (socket) {
+io.on('connection', function (socket) {
     console.log('There has been a new connection');
     var initiatorChannel = '';
     if (!io.isConnected) {
