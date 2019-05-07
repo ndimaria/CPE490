@@ -67,8 +67,10 @@
         var socket = io.connect(SIGNALING_SERVER + channel);
         socket.on('connect', function () {
             // setup peer connection & pass socket object over the constructor!
+
         });
         socket.send = function (message) {
+            console.log('Emitting message');
             socket.emit('message', {
                 sender: sender,
                 data: message
