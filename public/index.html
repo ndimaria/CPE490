@@ -168,7 +168,7 @@
 
         var id = uuid();
         console.log("This user's id is" + id);
-        //socket.emit('uid', id);
+        socket.emit('uid', id);
 
 
         var socket = io();
