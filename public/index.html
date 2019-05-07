@@ -75,9 +75,11 @@
             });
         };
         screensharing.openSignalingChannel = function(callback) {
+            console.log('Reached openSignalingChannel');
             return socket.on('message', callback);
         };
         screensharing.onscreen = function(_screen) {
+            console.log('Reached onscreen');
             var alreadyExist = document.getElementById(_screen.userid);
             if (alreadyExist) return;
             if (typeof roomsList === 'undefined') roomsList = document.body;
@@ -101,6 +103,7 @@
         };
         // on getting each new screen
         screensharing.onaddstream = function(media) {
+            console.log('Reached onaddstream');
             media.video.id = media.userid;
             var video = media.video;
             videosContainer.insertBefore(video, videosContainer.firstChild);

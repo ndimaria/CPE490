@@ -44,6 +44,7 @@ io.sockets.on('connection', function (socket) {
     }
 
     socket.on('new-channel', function (data) {
+        console.log('Received packet with new-channel header');
         if (!channels[data.channel]) {
             initiatorChannel = data.channel;
         }
@@ -53,11 +54,13 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('presence', function (channel) {
+        console.log('Received packet with presence header');
         var isChannelPresent = !! channels[channel];
         socket.emit('presence', isChannelPresent);
     });
 
     socket.on('disconnect', function (channel) {
+        console.log('Received packet with disconnect header from Connection');
         if (initiatorChannel) {
             delete channels[initiatorChannel];
         }
@@ -73,6 +76,7 @@ function onNewNamespace(channel, sender) {
         }
 
         socket.on('message', function (data) {
+            console.log('Received packet with message header');
             if (data.sender == sender) {
                 if(!username) username = data.data.sender;
 
@@ -81,6 +85,7 @@ function onNewNamespace(channel, sender) {
         });
 
         socket.on('disconnect', function() {
+            console.log('Received packet with disconnect header from onNewNamespace');
             if(username) {
                 socket.broadcast.emit('user-left', username);
                 username = null;
