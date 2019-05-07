@@ -64,7 +64,7 @@
             channel: channel,
             sender: sender
         });
-        var socket = io.connect(SIGNALING_SERVER + channel);
+        var socket = io.connect(SIGNALING_SERVER + '/' + channel);
         socket.on('connect', function () {
             // setup peer connection & pass socket object over the constructor!
             console.log('You have joined the room');
