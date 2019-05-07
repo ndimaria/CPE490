@@ -71,6 +71,8 @@
         });
         socket.send = function (message) {
             console.log('Emitting message');
+            console.log(sender);
+            console.log(message);
             socket.emit('message', {
                 sender: sender,
                 data: message
