@@ -152,9 +152,10 @@
                 element.innerHTML = numberOfParticipants + ' users are viewing your screen!';
             }
         };
+    </script>
     <!--End of Scrensharing Code-->
 
-    <!--<script>-->
+    <script>
     var id = "nothing"
       $(function () {
         //Create a random User ID
@@ -170,7 +171,7 @@
         //socket.emit('uid', id);
 
 
-        //var socket = io();
+        var socket = io();
         $('form').submit(function(e){
           e.preventDefault(); //prevents page reloading
           socket.emit('chat message', $('#m').val());
