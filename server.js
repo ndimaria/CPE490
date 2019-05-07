@@ -36,7 +36,7 @@ var io = require('socket.io').listen(app, {
 
 var channels = {};
 
-io.on('connection', function (socket) {
+io.sockets.on('connection', function (socket) {
     console.log('There has been a new connection');
     var initiatorChannel = '';
     if (!io.isConnected) {
