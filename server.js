@@ -82,7 +82,7 @@ function onNewNamespace(channel, sender) {
             console.log('Received packet with message header');
             if (data.sender == sender) {
                 if(!username) username = data.data.sender;
-
+                console.log('Routing message');
                 socket.broadcast.emit('message', data.data);
             }
         });
