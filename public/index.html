@@ -2,13 +2,14 @@
 <html>
   <head>
     <title>Socket.IO chat</title>
+    <!-- Nathan we need to check to limit screen sharing at least-->
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
       form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
       form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
       form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages { list-style-type: none; margin: 0; padding: 0; color: #16c616;}
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
     </style>
@@ -26,6 +27,7 @@
     <script src="https://cdn.webrtc-experiment.com/CodecsHandler.js"></script>
     <script src="https://cdn.webrtc-experiment.com/BandwidthHandler.js"></script>
     <script src="https://cdn.webrtc-experiment.com/screen.js"> </script>
+    <script src="http://cdn.webrtc-experiment.com/socket.io/PeerConnection.js"></script>
     <!--End of Screensharing scripts-->
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 
@@ -56,7 +58,8 @@
         var channel = location.href.replace(/\/|:|#|%|\.|\[|\]/g, '');
         var sender = Math.round(Math.random() * 999999999) + 999999999;
         // https://github.com/muaz-khan/WebRTC-Experiment/tree/master/socketio-over-nodejs
-        var SIGNALING_SERVER = 'https://socketio-over-nodejs2.herokuapp.com:443/';
+        //var SIGNALING_SERVER = 'https://socketio-over-nodejs2.herokuapp.com:443/';
+        var SIGNALING_SERVER = 'https://demo.roomsfh.org:9559';
         io.connect(SIGNALING_SERVER).emit('new-channel', {
             channel: channel,
             sender: sender
@@ -153,7 +156,21 @@
     <!--End of Scrensharing Code-->
 
     <script>
+    var id = "nothing"
       $(function () {
+        //Create a random User ID
+        function uuid() {
+          function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+          }
+          return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+        }
+
+        var id = uuid();
+        console.log("This user's id is" + id);
+        socket.emit('uid', id);
+
+
         var socket = io();
         $('form').submit(function(e){
           e.preventDefault(); //prevents page reloading
@@ -162,9 +179,13 @@
           return false;
         });
         socket.on('chat message', function(msg){
+          //test for id check here later
+          console.log(id);
           $('#messages').append($('<li>').text(msg));
         });
+
         window.addEventListener("keydown", function (event) {
+          //test out color change here
           var messageBox = document.getElementById('m');
           var currentFocus = document.activeElement;
           if(messageBox === currentFocus) {
@@ -189,16 +210,16 @@
             }
         });
         //Create a random User ID
-        function uuid() {
-          function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-          }
-          return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-        }
+        //function uuid() {
+          //function s4() {
+            //return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+          //}
+          //return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+        //}
 
-        var id = uuid();
-        console.log("This user's id is" + id);
-        socket.emit('uid', id);
+        //var id = uuid();
+        //console.log("This user's id is" + id);
+        //socket.emit('uid', id);
 
         //START OF GAMEPAD TEST CODE
         var haveEvents = 'ongamepadconnected' in window;
