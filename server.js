@@ -68,7 +68,8 @@ io.sockets.on('connection', function (socket) {
 });
 
 function onNewNamespace(channel, sender) {
-    console.log('Setting up a new namespace');
+    console.log('Setting up a new namespace on this channel');
+    console.log(channel);
     io.of('/' + channel).on('connection', function (socket) {
         console.log('Right before io attempts to disconnect');
         var username;
