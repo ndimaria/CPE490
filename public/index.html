@@ -67,7 +67,7 @@
         var socket = io.connect(SIGNALING_SERVER + channel);
         socket.on('connect', function () {
             // setup peer connection & pass socket object over the constructor!
-
+            console.log('You have joined the room');
         });
         socket.send = function (message) {
             console.log('Emitting message');
