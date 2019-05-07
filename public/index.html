@@ -164,10 +164,10 @@
 
         var id = uuid();
         console.log("This user's id is" + id);
-        socket.emit('uid', id);
+        //socket.emit('uid', id);
 
 
-        var socket = io();
+        //var socket = io();
         $('form').submit(function(e){
           e.preventDefault(); //prevents page reloading
           socket.emit('chat message', $('#m').val());
