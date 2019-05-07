@@ -69,11 +69,12 @@ io.sockets.on('connection', function (socket) {
 
 function onNewNamespace(channel, sender) {
     io.of('/' + channel).on('connection', function (socket) {
+        console.log('Right before io attempts to disconnect');
         var username;
-        if (io.isConnected) {
-            io.isConnected = false;
-            socket.emit('connect', true);
-        }
+        //if (io.isConnected) {
+        //    io.isConnected = false;
+        //    socket.emit('connect', true);
+        //}
 
         socket.on('message', function (data) {
             console.log('Received packet with message header');
