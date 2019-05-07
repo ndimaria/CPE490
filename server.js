@@ -28,11 +28,11 @@ var io = require('socket.io').listen(app, {
     origins: '*:*'
 });
 
-io.set('transports', [
+//io.set('transports', [
     // 'websocket',
-    'xhr-polling',
-    'jsonp-polling'
-]);
+//    'xhr-polling',
+//    'jsonp-polling'
+//]);
 
 var channels = {};
 
