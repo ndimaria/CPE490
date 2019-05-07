@@ -83,6 +83,8 @@ function onNewNamespace(channel, sender) {
             if (data.sender == sender) {
                 if(!username) username = data.data.sender;
                 console.log('Routing message');
+                console.log(sender);
+                console.log(data.sender);
                 socket.broadcast.emit('message', data.data);
             }
         });
