@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+    </style>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <!--<script src="//cdn.webrtc-experiment.com/getScreenId.js"></script>
+    <script src="//cdn.webrtc-experiment.com/screen.js"></script>-->
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      $(function () {
+        var socket = io();
+        $('form').submit(function(e){
+          e.preventDefault(); //prevents page reloading
+          socket.emit('chat message', $('#m').val());
+          $('#m').val('');
+          return false;
+        });
+        socket.on('chat message', function(msg){
+          $('#messages').append($('<li>').text(msg));
+        });
+        window.addEventListener("keydown", function (event) {
+          var messageBox = document.getElementById('m');
+          var currentFocus = document.activeElement;
+          if(messageBox === currentFocus) {
+            return;
+          }
+          if (event.defaultPrevented) {
+            return; // Do nothing if the event was already processed
+          }
+          switch (event.key) {
+            case "ArrowDown":
+              socket.emit('chat message', 'Down');
+              break;
+            case "ArrowUp":
+              socket.emit('chat message', 'Up');
+              break;
+            case "ArrowLeft":
+              socket.emit('chat message', 'Left');
+              break;
+            case "ArrowRight":
+              socket.emit('chat message', 'Right');
+              break;
+            }
+        });
+        //Create a random User ID
+        function uuid() {
+          function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+          }
+          return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+        }
+        var id = uuid();
+        console.log("This user's id is" + id);
+        socket.emit('uid', id);
+        //START OF GAMEPAD TEST CODE
+        var haveEvents = 'ongamepadconnected' in window;
+        var controllers = {};
+        function connecthandler(e) {
+          addgamepad(e.gamepad);
+        }
+        function addgamepad(gamepad) {
+          controllers[gamepad.index] = gamepad;
+          var d = document.createElement("div");
+          d.setAttribute("id", "controller" + gamepad.index);
+          var t = document.createElement("h1");
+          t.appendChild(document.createTextNode("gamepad: " + gamepad.id));
+          //t.insertBefore(document.createTextNode("gamepad: " + gamepad.id), document.getElementById('m'));
+          d.appendChild(t);
+          var b = document.createElement("div");
+          b.className = "buttons";
+          for (var i = 0; i < gamepad.buttons.length; i++) {
+            var e = document.createElement("span");
+            e.className = "button";
+            //e.id = "b" + i;
+            e.innerHTML = i;
+            b.appendChild(e);
+          }
+          d.appendChild(b);
+          var a = document.createElement("div");
+          a.className = "axes";
+          for (var i = 0; i < gamepad.axes.length; i++) {
+            var p = document.createElement("progress");
+            p.className = "axis";
+            //p.id = "a" + i;
+            p.setAttribute("max", "2");
+            p.setAttribute("value", "1");
+            p.innerHTML = i;
+            a.appendChild(p);
+          }
+          d.appendChild(a);
+          // See https://github.com/luser/gamepadtest/blob/master/index.html
+          var start = document.getElementById("start");
+          if (start) {
+            start.style.display = "none";
+          }
+          //document.body.appendChild(d);
+          document.body.insertBefore(d, document.getElementById('messages'));
+          requestAnimationFrame(updateStatus);
+        }
+        function disconnecthandler(e) {
+          removegamepad(e.gamepad);
+        }
+        function removegamepad(gamepad) {
+          var d = document.getElementById("controller" + gamepad.index);
+          document.body.removeChild(d);
+          delete controllers[gamepad.index];
+        }
+        function updateStatus() {
+          if (!haveEvents) {
+            scangamepads();
+          }
+          var i = 0;
+          var j;
+          for (j in controllers) {
+            var controller = controllers[j];
+            var d = document.getElementById("controller" + j);
+            var buttons = d.getElementsByClassName("button");
+            for (i = 0; i < controller.buttons.length; i++) {
+              var b = buttons[i];
+              var val = controller.buttons[i];
+              var pressed = val == 1.0;
+              if (typeof(val) == "object") {
+                pressed = val.pressed;
+                val = val.value;
+              }
+              var pct = Math.round(val * 100) + "%";
+              b.style.backgroundSize = pct + " " + pct;
+              if (pressed) {
+                console.log('Button pressed');
+                b.className = "button pressed";
+              } else {
+                b.className = "button";
+              }
+            }
+            var axes = d.getElementsByClassName("axis");
+            for (i = 0; i < controller.axes.length; i++) {
+              var a = axes[i];
+              a.innerHTML = i + ": " + controller.axes[i].toFixed(4);
+              a.setAttribute("value", controller.axes[i] + 1);
+            }
+          }
+          requestAnimationFrame(updateStatus);
+        }
+        function scangamepads() {
+          var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+          for (var i = 0; i < gamepads.length; i++) {
+            if (gamepads[i]) {
+              if (gamepads[i].index in controllers) {
+                controllers[gamepads[i].index] = gamepads[i];
+              } else {
+                addgamepad(gamepads[i]);
+              }
+            }
+          }
+        }
+        window.addEventListener("gamepadconnected", connecthandler);
+        window.addEventListener("gamepaddisconnected", disconnecthandler);
+        if (!haveEvents) {
+          setInterval(scangamepads, 500);
+        }
+        //END OF GAMEPAD TEST CODE
+      });
+    </script>
+  </body>
+</html>

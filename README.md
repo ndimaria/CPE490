@@ -20,3 +20,6 @@ On joining the chat, a user now creates a unique ID for themselves and sends it 
 
 5/6/2019 Update:
 The service has been moved from http to https for both security reasons and to support WebRTC screensharing. Support for Access Control Allow Origin headers is in progress.
+
+5/7/2019 Update:
+The server and client have been consolidated under one domain, thus removing the issues experienced with Access Control Allow Origin headers. Issues regarding the broadcasting client not sending messages to the server have been resolved. Additionally, issues with the server not routing video data have been bypassed with a temporary workaround. Currently, the service can grab video data about a screen, send it to the server, and begin the signaling process with another client, but the process for reproducing this chain of events is inconsistent and requires the clients to follow a specific sequence of events to get it to work. Today it was also realized that the html file that was being served to the client was not the html file that was being modified for the last week, so all of the old chat and gamepad features have now broken.
